@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   xmlns:ns1="*"			 
+			   minWidth="820" minHeight="620"
+			   >
+	
+	<fx:Declarations>
+		
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+
+			
+			import flash.net.navigateToURL;
+			
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			
+			import spark.events.TextOperationEvent;
+			protected var recognizer:Recognizer;
+			[Bindable]
+			//protected var result:Result;
+			//[Bindable]
+			
+			protected function drawingArea_mouseUpHandler(event:MouseEvent):void
+			{	
+				recognizer=new Recognizer;
+				var pixel:Array;				
+				pixel=drawingArea.getPoints();
+				if(pixel.length<10){
+					showresult.text="Not enough points. Plaese try again."
+				}
+				else{
+				//for(var i:int=0;i<pixel.length;i++){
+					//gaofushuai.text+="new Point("+pixel[i].x+","+pixel[i].y+"),";
+					//}
+					showresult.text=recognizer.recognize(pixel)
+					if(showresult.text.toString()!="Gesture not found. Please try again."){	
+						Alert.show("Go to "+showresult.text+"?", "Confirm",
+					  Alert.YES | Alert.CANCEL, this,
+					  alertListener, null, Alert.YES);
+					}
+				}
+				
+			}
+			
+			protected function drawingArea_mouseDownHandler(event:MouseEvent):void
+			{
+				showresult.text="Recognizing...";
+			}
+			
+
+			/*protected function eraseBtn_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				drawingArea.erase();
+				showresult.text="Result will show here.";
+				//gaofushuai.text="nimei";
+			}
+			
+			protected function goBtn_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+				switch(showresult.text){
+					case "Courseworks":navigateToURL(new URLRequest('https://courseworks.columbia.edu/'),'_blank');break;
+					case "Cubmail":navigateToURL(new URLRequest('https://cubmail.cc.columbia.edu/'),'_blank');break;
+					case "Library":navigateToURL(new URLRequest('http://library.columbia.edu/'),'_blank');break;	
+					case "SSOL":navigateToURL(new URLRequest('https://ssol.columbia.edu/'),'_blank');break;
+					case "CU Home Page":navigateToURL(new URLRequest('http://www.columbia.edu/'),'_blank');break;
+					case "Department Page":navigateToURL(new URLRequest('http://www.cs.columbia.edu/'),'_blank');break;
+				}
+			}*/
+			
+			protected function alertListener(eventObj:CloseEvent):void {
+				// Check to see if the OK button was pressed.
+				if (eventObj.detail==Alert.YES) {
+					switch(showresult.text){
+						case "Courseworks":navigateToURL(new URLRequest('https://courseworks.columbia.edu/'),'_blank');break;
+						case "Cubmail":navigateToURL(new URLRequest('https://cubmail.cc.columbia.edu/'),'_blank');break;
+						case "Library Page":navigateToURL(new URLRequest('http://library.columbia.edu/'),'_blank');break;	
+						case "SSOL":navigateToURL(new URLRequest('https://ssol.columbia.edu/'),'_blank');break;
+						case "CU Home Page":navigateToURL(new URLRequest('http://www.columbia.edu/'),'_blank');break;
+						case "CS Department Page":navigateToURL(new URLRequest('http://www.cs.columbia.edu/'),'_blank');break;
+					}
+				}
+			}
+			protected function more1d_Handler(event:MouseEvent):void
+			{navigateToURL(new URLRequest('http://depts.washington.edu/aimgroup/proj/dollar/'),'_blank');
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Style>
+		@namespace mx "library://ns.adobe.com/flex/mx";
+		mx|Alert{
+			borderVisible:fasle;
+			backgroundColor: #FFFFFF;
+			dropShadowVisible: false;
+			chromeColor: #a9dcff;
+			titleStyleName: alertTitle;
+			messageStyleName: alertMessage;
+			buttonStyleName: alertButton;
+			
+		}
+		.alertTitle{
+			fontSize: 20;
+			fontWeight: bold;
+			color: #000000;
+		}
+		.alertMessage {
+			fontWeight: bold;
+			color: #000000;
+		}
+		.alertButton {
+			color: #000000;
+			fontWeight: bold;
+		}
+	</fx:Style>
+
+	<s:Label left="40" top="0" width="100%" height="76" backgroundColor="#164684" color="#FFFFFF"
+			 fontSize="22" fontWeight="bold" horizontalCenter="0"
+			 text="       Columbia Port for CS Student" textAlign="center" verticalAlign="middle"/>
+	<s:Image right="20" top="0" width="84" height="76"
+			 source="assets/Screen Shot 2011-11-16 at 12.50.25 AM.png"/>
+	<s:Image left="16" top="0" width="119" height="76"
+			 source="assets/Screen Shot 2011-11-16 at 11.22.35 AM.jpg"/>
+	<s:TextArea left="20" top="76" width="399" height="48" borderVisible="false" editable="false"
+				fontFamily="Verdana" fontSize="17" fontWeight="bold"
+				text="Draw Unistroke to Go to CU Websites" verticalAlign="middle"/>
+	
+	<s:TextArea left="20" right="20" top="109" height="73" borderVisible="false" fontFamily="Verdana"
+				fontSize="13" textAlign="left" verticalAlign="justify" editable="false">
+		<s:text><![CDATA[Dear CS student, welcome to the Columbia Port specially made for you.  Here you can go to a CU website simply by drawing a relative unistroke gesture with your mouse! This site implements $1 Unistroke Recognizer. Currently, we have the following CU websites and their corresponding gesture. Just draw a unistroke gesture on the canvas on the right side of the page according to the template gesture on the left(The big dot is the starting point). Then it will take you to the corresponding website. Ready to try it? ]]></s:text>
+	</s:TextArea>
+	
+
+	<s:Group left="20" right="20" top="200" height="95%">
+		<s:Panel id="p" right="0" top="30" width="50%" height="100%" backgroundColor="#DAF1FC"
+				 borderColor="#FFFFFF" borderVisible="false" chromeColor="#99CCFF" color="#FFFFFF"
+				 dropShadowVisible="false" focusColor="#0E589E" >
+			<DrawingArea xmlns="*"
+						 id="drawingArea" width="100%" height="100%" chromeColor="#DAF1FC"
+						 mouseUp='drawingArea_mouseUpHandler(event)' mouseDown="drawingArea_mouseDownHandler(event)">
+				
+			</DrawingArea>
+			<s:Label id="showresult" x="10" y="-29" width="454" height="31" accessibilityEnabled="true"
+					 chromeColor="#99CCFF" color="#F5690C" fontFamily="Verdana" fontSize="12"
+					 fontWeight="bold" text="Result will show here." textAlign="left"
+					 verticalAlign="middle" >
+				
+			</s:Label>
+			
+			
+			<s:controlBarContent>
+				<mx:ColorPicker change="drawingArea.drawColor = event.target.selectedColor" buttonMode="true"/>
+				
+				
+			</s:controlBarContent>
+		</s:Panel>
+		<s:TextArea right="-10" top="0" width="436" height="28" borderVisible="false" editable="false"
+					fontFamily="Verdana" fontSize="13" fontWeight="bold" horizontalCenter="218"
+					text="Make unistrokes on this canvas according to the template." />
+		<s:Image left="0" top="30" width="50%" height="100%" source="assets/template.jpg" />
+
+	
+	</s:Group>
+	<s:Label id="more1d" left="20" top="200" width="247" height="28" buttonMode="true"
+			 click="more1d_Handler(event)" color="#0808F1" fontFamily="Verdana" fontSize="13"
+			 text="More about $1 Unistroke Recognizer." textDecoration="underline"/>
+
+</s:Application>
